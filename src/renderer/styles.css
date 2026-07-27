@@ -1,0 +1,524 @@
+:root {
+  --bg: #f5f6f7;
+  --panel: #fbfbfc;
+  --surface: #ffffff;
+  --sunken: #e0e0e2;
+  --line: #d7d9dc;
+  --text: #1d1d1f;
+  --muted: #6b6f76;
+  --disabled: #b0b3b8;
+  --accent: #0d6b3f;
+  --accent-soft: #e3efe8;
+  --accent-line: #b8d5c5;
+  --hover: #ececee;
+  --badge-fg: #8a5a00;
+  --badge-bg: #fff3d6;
+  --badge-line: #f0d79a;
+  --shadow: rgba(0, 0, 0, 0.16);
+  --shadow-strong: rgba(0, 0, 0, 0.2);
+  --toolbar-h: 40px;
+  --formula-h: 30px;
+  --sheetbar-h: 30px;
+  --status-h: 24px;
+  --titlebar-h: 34px;
+}
+
+/* The main process owns the decision — it resolves "follow the system" against
+   nativeTheme and stamps the result on <html> — so the palette keys off that
+   attribute rather than prefers-color-scheme. */
+:root[data-theme='dark'] {
+  --bg: #1c1c1f;
+  --panel: #212124;
+  --surface: #2a2a2e;
+  --sunken: #3a3a40;
+  --line: #3a3a40;
+  --text: #e6e6ea;
+  --muted: #9a9aa2;
+  --disabled: #64646c;
+  --accent: #4ecf95;
+  --accent-soft: #1e3a2c;
+  --accent-line: #2f6a4c;
+  --hover: #34343a;
+  --badge-fg: #ffcf70;
+  --badge-bg: #3a2f14;
+  --badge-line: #5c4a1e;
+  --shadow: rgba(0, 0, 0, 0.5);
+  --shadow-strong: rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font: 13px -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  cursor: default;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The window uses a hidden inset title bar, so this strip both provides the
+   drag region and keeps content clear of the traffic lights. */
+#titlebar {
+  height: var(--titlebar-h);
+  flex: 0 0 auto;
+  -webkit-app-region: drag;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ------------------------------------------------------------- toolbar */
+
+#toolbar {
+  height: var(--toolbar-h);
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 8px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+.tb-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tb-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--line);
+  margin: 0 6px;
+}
+
+.tb-spacer {
+  flex: 1;
+}
+
+.tb-btn {
+  min-width: 26px;
+  height: 26px;
+  padding: 0 5px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
+  cursor: default;
+}
+
+.tb-btn:hover {
+  background: var(--hover);
+}
+
+.tb-btn:active {
+  background: var(--sunken);
+}
+
+.tb-btn.on {
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+.tb-btn-wide {
+  min-width: 32px;
+}
+
+.tb-select {
+  height: 26px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+  padding: 0 4px;
+  max-width: 130px;
+}
+
+.tb-select-sm {
+  max-width: 62px;
+}
+
+.tb-color {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+}
+
+.tb-color:hover {
+  background: var(--hover);
+}
+
+.tb-color input[type='color'] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  cursor: default;
+}
+
+.tb-color-glyph {
+  font-weight: 700;
+  font-size: 13px;
+  pointer-events: none;
+  line-height: 1;
+  border-bottom: 3px solid currentColor;
+  padding-bottom: 1px;
+}
+
+.tb-badge {
+  font-size: 11px;
+  color: var(--badge-fg);
+  background: var(--badge-bg);
+  border: 1px solid var(--badge-line);
+  border-radius: 4px;
+  padding: 2px 7px;
+}
+
+/* -------------------------------------------------------------- menus */
+
+.tb-menu-wrap {
+  position: relative;
+}
+
+.tb-menu {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  z-index: 60;
+  min-width: 180px;
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px var(--shadow);
+}
+
+.tb-menu button,
+.ctx-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  font: inherit;
+  color: var(--text);
+  cursor: default;
+}
+
+.tb-menu button:hover,
+.ctx-menu button:hover {
+  background: var(--accent-soft);
+}
+
+.ctx-menu {
+  position: fixed;
+  z-index: 80;
+  min-width: 190px;
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 8px 28px var(--shadow-strong);
+}
+
+.ctx-menu .ctx-sep {
+  height: 1px;
+  margin: 4px 6px;
+  background: var(--line);
+}
+
+.ctx-menu button:disabled {
+  color: var(--disabled);
+}
+
+.ctx-menu button:disabled:hover {
+  background: transparent;
+}
+
+/* --------------------------------------------------------- formula bar */
+
+#formulabar {
+  height: var(--formula-h);
+  flex: 0 0 auto;
+  display: flex;
+  align-items: stretch;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+.fb-name {
+  width: 110px;
+  border: none;
+  border-right: 1px solid var(--line);
+  background: var(--surface);
+  font: inherit;
+  font-size: 12px;
+  padding: 0 8px;
+  color: var(--text);
+  user-select: text;
+}
+
+.fb-fx {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--muted);
+  border-right: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.fb-input {
+  flex: 1;
+  border: none;
+  background: var(--surface);
+  font: inherit;
+  font-size: 13px;
+  padding: 0 10px;
+  color: var(--text);
+  user-select: text;
+}
+
+.fb-name:focus,
+.fb-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* --------------------------------------------------------------- grid */
+
+#gridhost {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.grid-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+/* Transparent layer over the canvas: it supplies native scrollbars and
+   receives every pointer and key event. */
+.grid-scroller {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  outline: none;
+}
+
+.grid-spacer {
+  width: 1px;
+  height: 1px;
+}
+
+.cell-editor {
+  position: absolute;
+  z-index: 20;
+  margin: 0;
+  padding: 1px 3px;
+  border: 2px solid var(--accent);
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--text);
+  resize: none;
+  overflow: hidden;
+  white-space: pre;
+  line-height: 1.15;
+  outline: none;
+  user-select: text;
+  box-shadow: 0 1px 6px var(--shadow);
+}
+
+/* ---------------------------------------------------------- sheet tabs */
+
+#sheetbar {
+  height: var(--sheetbar-h);
+  flex: 0 0 auto;
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  padding: 0 6px;
+  background: var(--panel);
+  border-top: 1px solid var(--line);
+}
+
+.sheet-add {
+  width: 24px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
+  cursor: default;
+  border-radius: 5px;
+}
+
+.sheet-add:hover {
+  background: var(--hover);
+}
+
+.sheet-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.sheet-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.sheet-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 5px 5px 0 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: default;
+  border-bottom: 2px solid transparent;
+}
+
+.sheet-tab:hover {
+  background: var(--hover);
+}
+
+.sheet-tab.active {
+  background: var(--surface);
+  color: var(--accent);
+  font-weight: 600;
+  border-bottom-color: var(--accent);
+}
+
+.sheet-tab .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.sheet-tab input {
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  font: inherit;
+  font-size: 12px;
+  width: 100px;
+  padding: 1px 4px;
+  user-select: text;
+}
+
+/* -------------------------------------------------------------- status */
+
+#statusbar {
+  height: var(--status-h);
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  background: var(--panel);
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+#statusStats {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------- find */
+
+/* The author `display: flex` below outranks the UA sheet's `[hidden]` rule, so
+   the hidden attribute needs restating here or the bar shows on launch. */
+#findBar[hidden] {
+  display: none;
+}
+
+#findBar {
+  position: absolute;
+  top: calc(var(--titlebar-h) + var(--toolbar-h) + var(--formula-h) + 8px);
+  right: 18px;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px var(--shadow);
+}
+
+#findBar input {
+  width: 190px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 4px 8px;
+  font: inherit;
+  user-select: text;
+}
+
+#findBar input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+#findBar button {
+  min-width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  font: inherit;
+  color: var(--text);
+  cursor: default;
+}
+
+#findBar button:hover {
+  background: var(--hover);
+}
+
+#findCount {
+  font-size: 11px;
+  color: var(--muted);
+  min-width: 54px;
+  text-align: center;
+}

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'"
+    />
+    <title>Gridly</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="titlebar"></div>
+
+    <div id="toolbar">
+      <div class="tb-group">
+        <select id="fontFamily" class="tb-select" title="Font">
+          <option>Calibri</option>
+          <option>Helvetica Neue</option>
+          <option>Arial</option>
+          <option>Times New Roman</option>
+          <option>Georgia</option>
+          <option>Courier New</option>
+          <option>Menlo</option>
+          <option>Verdana</option>
+        </select>
+        <select id="fontSize" class="tb-select tb-select-sm" title="Font size">
+          <option>8</option><option>9</option><option>10</option><option>11</option>
+          <option>12</option><option>14</option><option>16</option><option>18</option>
+          <option>20</option><option>24</option><option>28</option><option>36</option>
+        </select>
+      </div>
+
+      <div class="tb-sep"></div>
+
+      <div class="tb-group">
+        <button class="tb-btn" data-cmd="bold" title="Bold (Cmd+B)"><b>B</b></button>
+        <button class="tb-btn" data-cmd="italic" title="Italic (Cmd+I)"><i>I</i></button>
+        <button class="tb-btn" data-cmd="underline" title="Underline (Cmd+U)"><u>U</u></button>
+        <label class="tb-color" title="Text colour">
+          <span class="tb-color-glyph">A</span>
+          <input type="color" id="textColor" value="#000000" />
+        </label>
+        <label class="tb-color" title="Fill colour">
+          <span class="tb-color-glyph tb-color-bucket">▩</span>
+          <input type="color" id="fillColor" value="#ffff00" />
+        </label>
+        <div class="tb-menu-wrap">
+          <button class="tb-btn" id="borderBtn" title="Borders">▦</button>
+          <div class="tb-menu" id="borderMenu" hidden>
+            <button data-border="all">All borders</button>
+            <button data-border="outline">Outside border</button>
+            <button data-border="bottom">Bottom border</button>
+            <button data-border="top">Top border</button>
+            <button data-border="left">Left border</button>
+            <button data-border="right">Right border</button>
+            <button data-border="thickBottom">Thick bottom border</button>
+            <button data-border="none">No border</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tb-sep"></div>
+
+      <div class="tb-group">
+        <button class="tb-btn" data-cmd="align:left" title="Align left">◧</button>
+        <button class="tb-btn" data-cmd="align:center" title="Align centre">◫</button>
+        <button class="tb-btn" data-cmd="align:right" title="Align right">◨</button>
+        <button class="tb-btn" data-cmd="wrap" title="Wrap text">⏎</button>
+        <button class="tb-btn" data-cmd="merge" title="Merge cells">⬓</button>
+      </div>
+
+      <div class="tb-sep"></div>
+
+      <div class="tb-group">
+        <select id="numFmt" class="tb-select" title="Number format">
+          <option value="General">General</option>
+          <option value="0">Integer</option>
+          <option value="#,##0.00">Number</option>
+          <option value="&quot;$&quot;#,##0.00">Currency $</option>
+          <option value="&quot;€&quot;#,##0.00">Currency €</option>
+          <option value="0.00%">Percent</option>
+          <option value="0.00E+00">Scientific</option>
+          <option value="yyyy-mm-dd">Date</option>
+          <option value="h:mm AM/PM">Time</option>
+          <option value="@">Text</option>
+        </select>
+        <button class="tb-btn" data-cmd="decDecimal" title="Decrease decimals">.0←</button>
+        <button class="tb-btn" data-cmd="incDecimal" title="Increase decimals">.00→</button>
+      </div>
+
+      <div class="tb-sep"></div>
+
+      <div class="tb-group">
+        <button class="tb-btn tb-btn-wide" data-cmd="autosum" title="AutoSum">Σ</button>
+        <button class="tb-btn tb-btn-wide" data-cmd="sortAsc" title="Sort ascending">A↓</button>
+        <button class="tb-btn tb-btn-wide" data-cmd="sortDesc" title="Sort descending">Z↓</button>
+      </div>
+
+      <div class="tb-spacer"></div>
+
+      <div class="tb-group">
+        <span id="readonlyBadge" class="tb-badge" hidden>Read-only</span>
+      </div>
+    </div>
+
+    <div id="formulabar">
+      <input id="nameBox" class="fb-name" spellcheck="false" title="Name box" />
+      <div class="fb-fx">fx</div>
+      <input id="formulaInput" class="fb-input" spellcheck="false" placeholder="" />
+    </div>
+
+    <div id="gridhost"></div>
+
+    <div id="sheetbar">
+      <button id="addSheet" class="sheet-add" title="New sheet">+</button>
+      <div id="sheetTabs" class="sheet-tabs"></div>
+    </div>
+
+    <div id="statusbar">
+      <span id="statusLeft">Ready</span>
+      <span id="statusStats"></span>
+    </div>
+
+    <div id="findBar" hidden>
+      <input id="findInput" placeholder="Find in sheet" spellcheck="false" />
+      <button id="findPrev" title="Previous">↑</button>
+      <button id="findNext" title="Next">↓</button>
+      <span id="findCount"></span>
+      <button id="findClose" title="Close">✕</button>
+    </div>
+
+    <div id="contextMenu" class="ctx-menu" hidden></div>
+
+    <script src="bundle.js"></script>
+  </body>
+</html>
